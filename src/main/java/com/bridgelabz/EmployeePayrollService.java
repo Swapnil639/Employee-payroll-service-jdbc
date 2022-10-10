@@ -16,7 +16,8 @@ public class EmployeePayrollService {
             connection = DriverManager.getConnection(jdbcURL, userName, password);
             System.out.println("Connection done!!");
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM payroll_service.employee_details");
+            statement.execute("update employee_payroll set basic_pay = 3000000 where name = 'Swapnil'");
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM employee_payroll_details");
             while (resultSet.next()) {
                 System.out.println(resultSet.getInt("id") + " | " + resultSet.getString("name") + " | " + resultSet.getString("gender") + " | " + resultSet.getString("phone_number") + " | " + resultSet.getString("address") + " | " + resultSet.getString("department") + " | " + resultSet.getDouble("basicPay") + " | " + resultSet.getDouble("deductions") + " | " + resultSet.getDouble("taxablePay") + " | " + resultSet.getDouble("netPay") + " | " + resultSet.getDouble("incomeTax") + " | " + resultSet.getDate("start"));
             }
