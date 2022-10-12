@@ -9,25 +9,19 @@ public class EmployeePayrollService {
         String jdbcURL = "jdbc:mysql://localhost:3306/payroll_service";
         String userName = "root";
         String password = "Swapnil123";
-        double basicPay = 5000000.0;
-        int id = 4;
+
         Connection connection = null;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             System.out.println("Driver loaded!");
             connection = DriverManager.getConnection(jdbcURL, userName, password);
             System.out.println("Connection done!!");
-            String query = "UPDATE employee_payroll SET basic_Pay=? WHERE id=?";
-            PreparedStatement prestatement = connection.prepareStatement(query);
-            prestatement.setDouble(1, basicPay);
-            prestatement.setInt(2, id);
-            prestatement.executeUpdate();
-
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM employee_payroll_details");
+            ResultSet resultSet = statement.executeQuery("SELECT SUM(basic_pay), AVG(basic_pay), MAX(basic_pay), MIN(basic_pay) FROM employee_payroll_details WHERE gender = 'M' GROUP BY gender ");
             while (resultSet.next()) {
-                System.out.println(resultSet.getInt("id") + " | " + resultSet.getString("name") + " | " + resultSet.getString("gender") + " | " + resultSet.getString("phone_number") + " | " + resultSet.getString("address") + " | " + resultSet.getString("department") + " | " + resultSet.getDouble("basicPay") + " | " + resultSet.getDouble("deductions") + " | " + resultSet.getDouble("taxablePay") + " | " + resultSet.getDouble("netPay") + " | " + resultSet.getDouble("incomeTax") + " | " + resultSet.getDate("start"));
+                System.out.println("Sum of all basic salary " + resultSet.getDouble("SUM(basic_pay)") + "\n" + "Average of all basic salary " + resultSet.getDouble("AVG(basic_pay)") + "\n" + "Min of all basic salary " + resultSet.getDouble("MIN(basic_pay)") + "\n" + "MAX of all basic salary " + resultSet.getDouble("MAX(basic_pay)"));
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
